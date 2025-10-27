@@ -32,7 +32,7 @@ This is a full-stack MERN (MongoDB, Express, React, Node.js) e-commerce platform
 
 ### 1. Clone and Install
 ```bash
-git clone https://github.com/hrutavmodha/e-commerce.git
+git clone https://github.com/frankmathewsajan/e-commerce.git
 cd e-commerce
 pnpm install
 cd frontend && pnpm install
@@ -253,12 +253,6 @@ See `CONTRIBUTING.md` for contribution guidelines.
 ## 📄 License
 
 This project is licensed under the MIT License - see `LICENSE` file.
-
-## 👨‍💻 Author
-
-**Hrutav Modha**  
-Email: modhahrutav@gmail.com
-
 ---
 
 **Happy Coding! 🚀**

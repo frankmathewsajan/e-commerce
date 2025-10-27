@@ -105,8 +105,15 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ## 👨‍💻 Author
 
-**Hrutav Modha**
+**Original Author**
 (_modhahrutav@gmail.com_)
+
+**Cloned and restructured by**
+(_Frank Mathew Sajan_) @frankmathewsajan
+(_Shagnik Sarkar_) @SHAGNIK007
+
+WiOS Club VIT-AP
+
 
 ## 🤝 Contributions
 
