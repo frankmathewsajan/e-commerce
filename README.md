@@ -129,7 +129,7 @@ This will start:
 
 ## ✅ Current Features
 
-- ✅ OAuth with Google (Implemented)
+- ✅ OAuth with Google (Implemented only for general sign-in, needs further enhancement)
 - ✅ JWT-based Authentication
 - ✅ Image Upload with 5MB limit
 - ✅ Email Notifications
