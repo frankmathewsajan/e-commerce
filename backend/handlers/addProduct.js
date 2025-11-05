@@ -1,7 +1,10 @@
 const { productModel } = require("../schemas/products")
-require("dotenv").config
+require("dotenv").config()
 module.exports = addProduct = async (req, res) => {
     const { name, price, description } = req.body
+    if (!req.file) {
+        return res.status(400).json(["Error", "Image is required"])
+    }
     const imageURL = req.file.filename
     const Product = new productModel({
         name: name,

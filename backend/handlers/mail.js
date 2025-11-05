@@ -16,5 +16,6 @@ module.exports = sendMail = async (req, res) => {
         subject: "Test Mail",
         html: "<p>This is a test mail from the E-Commerce system. Do not reply to this as this is auto-generated</p>"
     })
-    res.json(["Success", "Email is sent successfully"])
+    // Don't send response - signup already did
+    console.log("Confirmation email sent to:", req.body.email)
 }

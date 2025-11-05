@@ -9,6 +9,7 @@ const xss = require("xss-clean")
 const { body, validationResult } = require("express-validator")
 const sanitize = require("express-mongo-sanitize")
 const compress = require("compression")
+const mongoose = require("mongoose")
 const { signup, login, oauth } = require("./handlers/auth")
 const connect = require("./connect")
 const { verifyToken } = require("./handlers/jwts")
@@ -28,7 +29,9 @@ const app = express()
 require("dotenv").config()
 app.use(cors({
     origin: process.env.REACT_APP_FRONTEND_URL,
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }))
 app.use(
     express.json({
@@ -49,7 +52,10 @@ app.use("/images", express.static(path.join(__dirname, "handlers", "images")))
 // }))
 app.use(cookieParser())
 app.use(morgan("dev"))
-app.use(helmet())
+app.use(helmet({
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: false
+}))
 app.use(xss())
 app.use(sanitize())
 app.use(compress())
@@ -75,7 +81,8 @@ app.post("/signup", [
         })
     }
     await signup(req, res)
-    await mail(req, res)
+    // Don't await mail - it will cause double response
+    mail(req, res).catch(err => console.error("Mail error:", err))
 })
 app.post("/oauth", async (req, res) => {
     await oauth(req, res)
@@ -94,6 +101,7 @@ app.post("/login", [
     }
     await login(req, res)
 })
+app.options("*", cors())
 app.post("/products", verifyToken, checkRole("Retailer"), upload.single("image"), async (req, res) => {
     await addProduct(req, res)
 })
@@ -118,9 +126,32 @@ app.post("/reviews", verifyToken, async (req, res) => {
 app.get("/reviews", async (req, res) => {
     await showReview(req, res)
 })
+
+app.get("/test-oauth-config", (req, res) => {
+    res.json({
+        clientId: process.env.CLIENT_ID,
+        frontendUrl: process.env.REACT_APP_FRONTEND_URL,
+        clientIdExists: !!process.env.CLIENT_ID,
+        clientIdLength: process.env.CLIENT_ID?.length || 0
+    })
+})
+
+app.get("/favicon.ico", (req, res) => {
+    res.status(204).end()
+})
+
 app.get("/:id", async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({
+            error: "Invalid product ID format"
+        })
+    }
+    
     await showProduct(req, res)
 })
+
+
+
 app.listen(5000, () => {
     console.log("Server is running at port 5000")   
 })

@@ -1,20 +1,30 @@
-const mongodb = require("mongoose")
-const userSchema = new mongodb.Schema({
+const mongoose = require("mongoose")
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: function() {
+            // Password is only required if user is NOT using OAuth
+            // OAuth users won't have a password
+            return !this.isOAuthUser
+        }
     },
     role: {
         type: String,
         required: true
     },
-    password: {
-        type: String,
-        required: true
+    isOAuthUser: {
+        type: Boolean,
+        default: false
     }
 })
-module.exports = mongodb.model("users", userSchema)
+const users =  mongoose.model("users", userSchema)
+module.exports = users
