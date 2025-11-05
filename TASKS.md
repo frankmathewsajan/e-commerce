@@ -12,7 +12,7 @@ Complete these tasks to enhance the e-commerce platform. Each task has a difficu
 ## 📝 EASY TASKS (10 points each)
 
 ### 1. ⚙️ Add .gitignore File
-**Points: +10** | **Difficulty: Easy**
+**Points: +10** | **Difficulty: Easy** | **Priority: HIGH** ⚠️
 
 **Description:**  
 Create a proper `.gitignore` file to prevent sensitive files and dependencies from being committed to the repository.
@@ -22,12 +22,13 @@ Create a proper `.gitignore` file to prevent sensitive files and dependencies fr
 - Ignore `node_modules/` directories
 - Ignore build files and logs
 - Ignore OS-specific files (`.DS_Store`, `Thumbs.db`)
-- Ignore uploaded images in `backend/handlers/images/`
+- Ignore uploaded images in `backend/handlers/images/` (NOTE: Keep the directory itself but ignore uploaded files)
 
 **Acceptance Criteria:**
 - `.gitignore` file exists at project root
 - Contains all necessary patterns for Node.js/React projects
 - Environment files are protected
+- Uploaded product images are not committed to Git
 
 ---
 
@@ -173,22 +174,25 @@ Add a 5-star rating system to products alongside the existing review system.
 Create a complete order management system with payment integration (mock or Stripe).
 
 **Requirements:**
-- Create `orders` schema with order details
-- Implement checkout flow (Cart → Checkout → Confirmation)
-- Add order summary page
-- Create `placeOrder` handler
+- Create `orders` schema with order details (orderId, userId, products, total, status, timestamp)
+- Implement checkout flow (Cart → Checkout → Order Confirmation)
+- Add order summary page showing itemized bill
+- Create `placeOrder` handler in backend
 - Integrate payment gateway (Stripe test mode or mock payment)
-- Send order confirmation email
-- Add order history to user dashboard
-- Update product inventory after purchase
-- Generate unique order IDs
+- Send order confirmation email using existing mail handler
+- Add order history to user dashboard (see Task 6)
+- Update product inventory/stock after purchase
+- Generate unique order IDs (UUID or timestamp-based)
+- Clear cart after successful order
 
 **Acceptance Criteria:**
 - Complete checkout flow works end-to-end
-- Orders are saved to database
-- Confirmation emails are sent
-- Order history is accessible
-- Payment processing works (test mode)
+- Orders are saved to database with all details
+- Confirmation emails are sent successfully
+- Order history is accessible in dashboard
+- Payment processing works (test mode or mock)
+- Cart is cleared after order placement
+- Proper error handling for failed payments
 
 ---
 

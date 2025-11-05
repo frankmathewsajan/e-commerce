@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { useAlert } from "../AlertContext"
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
+import Alert from "./Alert"
 export default function Register() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [role, setRole] = useState("")
-    const { showAlert } = useAlert()
+    const { alert, showAlert } = useAlert()
     const verify = () => {
         if (name === "" || email === "" || password === "" || role === "")
             showAlert("Error", "Please fill up the details properly")
@@ -58,7 +59,7 @@ export default function Register() {
             </select>
             <br /><br />
             <button onClick={verify} className="p-1 w-[150px] rounded-[7px] bg-black text-white">Sign Up</button>
-            {alert.length !== 0 && <Alert heading={alert[0]} message={alert[1]} onClose={() => showAlert("", "")} />}
+            {alert && <Alert heading={alert.heading} message={alert.message} onClose={() => showAlert("", "")} />}
             <br /><br />
             <p>Already have an account? <a href="/#/verify" className="text-blue-500">Login</a></p>
             <br />
@@ -67,35 +68,47 @@ export default function Register() {
                 <h2 className="text-2xl">OR</h2>
             </strong>
             <br />
-            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+           <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
                 <GoogleLogin
-                    onSuccess={(credentialResponse) => {
-                        if (credentialResponse.credential === undefined || credentialResponse.credential === null || credentialResponse.credential === "") {
-                            showAlert("Error", "An error occurred while signing you up through Google. Please try again later.")
-                            return
-                        } else {
-                            fetch(`${process.env.REACT_APP_BACKEND_URL}/oauth`, {
+                    onSuccess={async (credentialResponse) => {
+                        try {
+                            if (!credentialResponse.credential) {
+                                showAlert("Error", "An error occurred while signing you up through Google. Please try again later.")
+                                return
+                            }
+                            
+                            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/oauth`, {
                                 method: "POST",
                                 credentials: "include",
                                 headers: {
-                                    "Content-type": "application/json"
+                                    "Content-Type": "application/json"
                                 },
                                 body: JSON.stringify({
                                     token: credentialResponse.credential
                                 })
-                            }).then((res) => {
-                                return res.json()
-                            }).then((data) => {
-                                showAlert(data.type, data.message)
-                            }).catch((err) => {
-                                showAlert("Error", "An error occurred while signing you up. Please try again later.")
-                                console.log(err)
                             })
+                            
+                            const data = await response.json()
+                            
+                            if (response.ok) {
+                                showAlert(data[0], data[1])
+                                // Redirect after successful login
+                                setTimeout(() => {
+                                    window.location.href = "/#/"
+                                }, 1500)
+                            } else {
+                                showAlert("Error", data[1] || "Authentication failed")
+                            }
+                        } catch (err) {
+                            console.error("OAuth Error:", err)
+                            showAlert("Error", "An error occurred while signing you up. Please try again later.")
                         }
                     }}
                     onError={() => {
                         showAlert("Error", "An error occurred while signing you up through Google. Please try again later.")
                     }}
+                    useOneTap={false}
+                    auto_select={false}
                 />
             </GoogleOAuthProvider>
         </div>

@@ -3,8 +3,10 @@ const AlertContext = createContext();
 export function AlertProvider({ children }) {
     const [alert, setAlert] = useState(null)
     const showAlert = (heading, message) => {
-        if(!heading || !message)
-        return
+        if(!heading || !message) {
+            setAlert(null)
+            return
+        }
         const newAlert = {
             id: Date.now(),
             heading: heading,

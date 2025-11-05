@@ -4,7 +4,7 @@ import { useAlert } from "../AlertContext"
 export default function Authorize(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const { showAlert } = useAlert()
+    const { alert, showAlert } = useAlert()
     const verify = () => {
         if (email === "" || password === "")
             showAlert("Error", "Please fill up the details properly")
@@ -59,10 +59,10 @@ export default function Authorize(){
                 onClick={verify}>
                 Log In
             </button>
-            {alert.length !== 0 && 
+            {alert && 
             <Alert 
-                heading={alert[0]} 
-                message={alert[1]}  
+                heading={alert.heading} 
+                message={alert.message}  
                 onClose={() => {
                     showAlert("", "")
                 }}

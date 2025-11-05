@@ -13,13 +13,23 @@ It supports role-based access control, image uploads, and dynamic product manage
   - Browse products
   - Add to cart and buy items
 
-## 🚀 Key Features
+## 🌟 Key Features
 
+### Authentication
 - JWT-based User Authentication
+- Google OAuth 2.0 Integration
 - Role-Based Access Control (RBAC)
-- Image Uploads using Multer
+
+### Product Management
+- Image Uploads using Multer (5MB limit, JPEG/PNG)
 - Product Listings with Dynamic Rendering
-- Cart Functionality with Purchase Flow
+- Search Functionality
+- Product Reviews & Comments
+
+### Shopping Experience
+- Cart Functionality with Add/Remove/View
+- Purchase Flow
+- Email Notifications
 
 ## 🛠️ Tech Stack
 
@@ -40,7 +50,7 @@ This project supports multiple package managers:
 
 **1. Clone the repository** 
    ```Bash
-   git clone "https://github.com/rutu-modha/e-commerce.git"
+   git clone "https://github.com/frankmathewsajan/e-commerce.git"
 cd ./e-commerce
 ```
 
@@ -53,6 +63,7 @@ npm install
 cd ..
 cd backend
 npm install
+cd ..
 ```
 *OR*
 - **using yarn**
@@ -63,6 +74,7 @@ yarn install
 cd ..
 cd backend
 yarn install
+cd ..
 ```
 *OR*
 - **using pnpm**
@@ -73,29 +85,64 @@ pnpm install
 cd ..
 cd backend
 pnpm install
+cd ..
 ```
-**3. Setup a `.env` at root file with your own Mongo_URI and JWT_SECRET variables**
+
+**3. Setup environment variables**
+
+⚠️ **Important:** This project requires **TWO separate `.env` files**!
+
+```Bash
+# Copy backend environment template
+copy backend\.env.example backend\.env
+# OR on Linux/Mac: cp backend/.env.example backend/.env
+
+# Copy frontend environment template  
+copy frontend\.env.example frontend\.env
+# OR on Linux/Mac: cp frontend/.env.example frontend/.env
+```
+
+Then fill in your actual values in both files. See [`SETUP_GUIDE.md`](./SETUP_GUIDE.md) for detailed instructions.
+
+**Required Variables:**
+- **Backend** (`backend/.env`): MONGO_URI, JWT_SECRET, EMAIL, APP_PASSWORD, NAME, CLIENT_ID, REACT_APP_FRONTEND_URL, REACT_APP_BACKEND_URL
+- **Frontend** (`frontend/.env`): REACT_APP_BACKEND_URL, REACT_APP_GOOGLE_CLIENT_ID
+
+📖 **For detailed setup instructions with step-by-step guides for MongoDB, Google OAuth, Gmail App Password, and more, see [SETUP_GUIDE.md](./SETUP_GUIDE.md)**
 
 **4. Run both servers**
 ```Bash
-cd ..
+pnpm run start
+```
+*OR*
+```Bash
 npm run start
 ```
 *OR*
 ```Bash
-cd ..
 yarn run start
 ```
-*OR*
-```Bash
-cd ..
-pnpm run start
-```
-## ✅ Upcoming Features
 
-- OAuth with Google
-- Customer Support Page
+This will start:
+- Backend server on `http://localhost:5000`
+- Frontend React app on `http://localhost:3000`
+
+## ✅ Current Features
+
+- ✅ OAuth with Google (Implemented)
+- ✅ JWT-based Authentication
+- ✅ Image Upload with 5MB limit
+- ✅ Email Notifications
+- ✅ Role-Based Access Control
+- ✅ Shopping Cart System
+- ✅ Product Search & Reviews
+
+## 🚧 Upcoming Features
+
+- Customer Support Ticket System
 - Static About and Contact Pages
+- Order History Dashboard
+- Payment Gateway Integration
 
 ## 📄 License
 
